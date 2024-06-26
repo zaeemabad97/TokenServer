@@ -134,30 +134,46 @@ async function getHubSpotContacts(url, accessToken) {
   console.log("In getHubSpotContacts");
   let allContacts = [];
   let nextUrl = url;
-  console.log('nextUrl : ',nextUrl);
-  console.log('accessToken : ',accessToken);
+  console.log('Initial nextUrl:', nextUrl);
+  console.log('accessToken:', accessToken);
+
   while (nextUrl) {
-    console.log('Came in while.');
+    console.log('Entered while loop, current nextUrl:', nextUrl);
     try {
-      console.log('Came in try.');
       const response = await axios.get(nextUrl, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
+        timeout: 10000, // 10 seconds
       });
-      console.log('After Call');
-      console.log('Data : ', response.data);
+      console.log('Response received, status:', response.status);
+
       allContacts = allContacts.concat(response.data.results);
-      nextUrl = response.data.paging?.next?.link;
+      console.log('Contacts fetched so far:', allContacts.length);
+
+      // Check if there is a next page
+      nextUrl = response.data.paging?.next?.link || null;
+      console.log('Updated nextUrl:', nextUrl);
     } catch (error) {
-      console.error("Error fetching HubSpot contacts:", error);
+      if (error.response) {
+        console.error('Error Response Data:', error.response.data);
+        console.error('Error Response Status:', error.response.status);
+        console.error('Error Response Headers:', error.response.headers);
+      } else if (error.request) {
+        console.error('Error Request:', error.request);
+      } else {
+        console.error('Error Message:', error.message);
+      }
+      console.error('Error Config:', error.config);
       throw error;
     }
   }
 
+  console.log('All contacts fetched:', allContacts.length);
   return allContacts;
 }
+
 
 async function updateHubSpotContact(contactId, uniqueIdentifier, customUrl, accessToken) {
   console.log("In updateHubSpotContact");
