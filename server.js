@@ -106,9 +106,10 @@ async function integrateHubSpotAndPostHog(portal_id, accessToken) {
   try {
     console.log("In integrateHubSpotAndPostHog");
     const contacts = await getHubSpotContacts(HUBSPOT_API_URL, accessToken);
+    console.log("Back in integrateHubSpotAndPostHog");
     console.log("contacts length : ", contacts.length);
     for (const customer of contacts) {
-      console.log('customer.properties.email : ', customer.properties.email);
+      console.log('customer.properties.email : ', customer.properties.email )
       const customUrlCondition = !customer.properties.custom_url?.trim();
       const uniqueIdentifierCondition = !customer.properties.unique_identifier?.trim();
       console.log('customUrlCondition && uniqueIdentifierCondition : ', customUrlCondition && uniqueIdentifierCondition )
@@ -142,7 +143,8 @@ async function getHubSpotContacts(url, accessToken) {
           "Content-Type": "application/json",
         },
       });
-      console.log('Data : ' + response.data);
+      console.log('After Call');
+      console.log('Data : ', response.data);
       allContacts = allContacts.concat(response.data.results);
       nextUrl = response.data.paging?.next?.link;
     } catch (error) {
