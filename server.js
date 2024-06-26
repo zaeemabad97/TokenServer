@@ -134,7 +134,8 @@ async function getHubSpotContacts(url, accessToken) {
   console.log("In getHubSpotContacts");
   let allContacts = [];
   let nextUrl = url;
-
+  console.log('nextUrl : ',nextUrl);
+  console.log('accessToken : ',accessToken);
   while (nextUrl) {
     console.log('Came in while.');
     try {
