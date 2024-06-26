@@ -136,15 +136,17 @@ async function getHubSpotContacts(url, accessToken) {
   let nextUrl = url;
 
   while (nextUrl) {
+    console.log('Came in while.');
     try {
+      console.log('Came in try.');
       const response = await axios.get(nextUrl, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
       });
- //     console.log('After Call');
- //     console.log('Data : ', response.data);
+      console.log('After Call');
+      console.log('Data : ', response.data);
       allContacts = allContacts.concat(response.data.results);
       nextUrl = response.data.paging?.next?.link;
     } catch (error) {
