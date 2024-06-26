@@ -143,8 +143,8 @@ async function getHubSpotContacts(url, accessToken) {
           "Content-Type": "application/json",
         },
       });
-      console.log('After Call');
-      console.log('Data : ', response.data);
+ //     console.log('After Call');
+ //     console.log('Data : ', response.data);
       allContacts = allContacts.concat(response.data.results);
       nextUrl = response.data.paging?.next?.link;
     } catch (error) {
